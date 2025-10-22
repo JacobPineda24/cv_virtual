@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi CV Virtual</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Mi CV Virtual</h1>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Inicio</a>
+        <a href="{{ url_for('donate') }}">Donar</a>
+        <a href="{{ url_for('compressor') }}">Compresor Online</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mi CV Virtual - Creado con Flask</p>
+    </footer>
+</body>
+</html>

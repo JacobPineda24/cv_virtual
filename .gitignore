@@ -1,0 +1,6 @@
+# Archivos y carpetas que NO deben subirse a GitHub
+.env
+__pycache__/
+uploads/
+*.pyc
+.DS_Store

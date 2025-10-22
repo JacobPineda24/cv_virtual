@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+    <h2>Versión Premium 💎</h2>
+    <p>Obtén acceso ilimitado a todas las funciones del compresor:</p>
+    <ul>
+        <li>Compresión y conversión sin límites.</li>
+        <li>Archivos de hasta 50 MB.</li>
+        <li>Soporte de formatos PNG, JPG y WebP.</li>
+    </ul>
+
+    <form action="{{ url_for('create-premium-session') }}" method="POST">
+        <button type="submit">Comprar Premium ($9.99 USD)</button>
+    </form>
+</section>
+{% endblock %}
