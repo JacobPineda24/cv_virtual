@@ -173,7 +173,7 @@ def create_premium_session():
                 'price_data': {
                     'currency': 'usd',
                     'product_data': {'name': 'Compresor Premium'},
-                    'unit_amount': 999,
+                    'unit_amount': 900,
                 },
                 'quantity': 1,
             }],
