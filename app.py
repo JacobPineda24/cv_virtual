@@ -226,6 +226,10 @@ def success_premium():
 def privacy_policy():
     return render_template('privacy-policy.html')
 
+@app.route('/data-deletion')
+def data_deletion():
+    return render_template('data-deletion.html')
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
