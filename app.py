@@ -24,10 +24,36 @@ app.config.update(
 
 # HTTPS y cabeceras de seguridad
 #Talisman(app, content_security_policy=None)
-talisman = Talisman(app, content_security_policy={
-    'default-src': "'self' https://connect.facebook.net https://www.facebook.com",
-    'script-src': "'self' https://connect.facebook.net https://www.facebook.com",
-    'frame-src': "'self' https://www.facebook.com"
+csp = {
+    'default-src': [
+        "'self'",
+        'https://connect.facebook.net',
+        'https://www.facebook.com'
+    ],
+    'script-src': [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        'https://connect.facebook.net',
+        'https://www.facebook.com'
+    ],
+    'frame-src': [
+        "'self'",
+        'https://www.facebook.com',
+        'https://connect.facebook.net'
+    ],
+    'style-src': [
+        "'self'",
+        "'unsafe-inline'"
+    ],
+    'img-src': [
+        "'self'",
+        'data:',
+        'https://www.facebook.com'
+    ]
+}
+
+Talisman(app, content_security_policy=csp)
 })
 
 # ================================
