@@ -54,7 +54,6 @@ csp = {
 }
 
 Talisman(app, content_security_policy=csp)
-})
 
 # ================================
 # CONFIG STRIPE
