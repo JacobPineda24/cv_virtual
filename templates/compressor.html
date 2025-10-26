@@ -18,19 +18,18 @@
     {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
-        <label for="file">Selecciona uno o varios archivos:</label>
-        <input type="file" name="files" id="file" multiple required>   
-
-        <label for="format">Formato de salida (solo para imágenes):</label>
-        <select name="format" id="format">
-            <option value="none">Mantener formato</option>
-            <option value="jpg">JPG</option>
-            <option value="png">PNG</option>
-            <option value="webp">WebP</option>
-        </select>
-        <br><br>
-
-        <button type="submit">Comprimir / Convertir</button>
+      <label for="file">Selecciona uno o varios archivos:</label><br>
+      <input type="file" name="files" id="file" multiple required><br><br>
+    
+      <label for="format">Formato de salida (solo para imágenes):</label>
+      <select name="format" id="format">
+        <option value="none">Mantener formato</option>
+        <option value="jpg">JPG</option>
+        <option value="png">PNG</option>
+        <option value="webp">WebP</option>
+      </select><br><br>
+    
+      <button type="submit" class="btn">Comprimir Archivos</button>
     </form>
     
     <hr>
