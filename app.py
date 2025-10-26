@@ -222,6 +222,9 @@ def success_premium():
     session["premium"] = True
     return render_template("success_premium.html")
 
+@app.route('/privacy-policy')
+def privacy_policy():
+    return render_template('privacy-policy.html')
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
