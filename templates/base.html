@@ -2,9 +2,21 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi CV Virtual</title>
+
+    <!-- Verificación opcional de dominio (Facebook Developers) -->
+    <!-- <meta name="facebook-domain-verification" content="TU_CODIGO_DE_VERIFICACION" /> -->
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- SDK de Facebook -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+      src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v18.0&appId=677852548339611&autoLogAppEvents=1">
+    </script>
 </head>
+
 <body>
     <header>
         <h1>Mi CV Virtual</h1>
@@ -23,10 +35,6 @@
     <footer>
         <p>&copy; 2025 Mi CV Virtual - Creado con Flask</p>
     </footer>
-    <!-- SDK de Facebook -->
-        <div id="fb-root"></div>
-<script async defer crossorigin="anonymous"
-src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v18.0&appId=677852548339611">
-</script>
 </body>
 </html>
+
