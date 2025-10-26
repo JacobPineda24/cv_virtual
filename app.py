@@ -108,53 +108,57 @@ def compressor():
     is_premium = session.get("premium", False)
 
     if request.method == "POST":
-        file = request.files.get("file")
-        format_option = request.form.get("format")
+    uploaded_files = request.files.getlist("files")
+    format_option = request.form.get("format")
 
-        if not file:
-            flash("Por favor selecciona un archivo.")
-            return redirect(request.url)
+    if not uploaded_files or uploaded_files == [None]:
+        flash("Por favor selecciona al menos un archivo.")
+        return redirect(request.url)
 
-        if not allowed_file(file.filename):
-            flash("Tipo de archivo no permitido.")
-            return redirect(request.url)
+    total_size = sum(len(f.read()) for f in uploaded_files)
+    for f in uploaded_files:
+        f.seek(0)
 
-        file_size = len(file.read())
-        file.seek(0)
-        size_limit = PREMIUM_SIZE_LIMIT if is_premium else FREE_SIZE_LIMIT
+    size_limit = PREMIUM_SIZE_LIMIT if is_premium else FREE_SIZE_LIMIT
+    if total_size > size_limit:
+        flash(f"Tamaño total excedido ({total_size / (1024 * 1024):.2f} MB). "
+              f"Límite: {size_limit / (1024 * 1024)} MB.")
+        return redirect(request.url)
 
-        if file_size > size_limit:
-            flash(f"Archivo demasiado grande. Límite: {size_limit / (1024 * 1024)} MB.")
-            return redirect(request.url)
+    if not is_premium and not check_free_limit():
+        flash("Límite gratuito alcanzado. ¡Actualiza a Premium!")
+        return redirect(url_for("premium"))
 
-        if not is_premium and not check_free_limit():
-            flash("Límite gratuito alcanzado. ¡Actualiza a Premium!")
-            return redirect(url_for("premium"))
+    zip_buffer = BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
+        for file in uploaded_files:
+            if not allowed_file(file.filename):
+                continue
 
-        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(file_path)
+            file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+            file.save(file_path)
 
-        if format_option and format_option != "none":
-            try:
-                image = Image.open(file_path)
-                new_path = os.path.splitext(file_path)[0] + f".{format_option}"
-                image.save(new_path, format_option.upper())
-                os.remove(file_path)
-                file_path = new_path
-            except Exception:
-                flash("Error al convertir imagen.")
-                return redirect(request.url)
+            # Si el usuario eligió convertir imágenes
+            if format_option and format_option != "none":
+                try:
+                    image = Image.open(file_path)
+                    new_path = os.path.splitext(file_path)[0] + f".{format_option}"
+                    image.save(new_path, format_option.upper())
+                    os.remove(file_path)
+                    file_path = new_path
+                except Exception:
+                    flash(f"Error al convertir {file.filename}.")
+                    continue
 
-        zip_buffer = BytesIO()
-        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
             zipf.write(file_path, arcname=os.path.basename(file_path))
-        os.remove(file_path)
-        zip_buffer.seek(0)
+            os.remove(file_path)
 
-        if not is_premium:
-            increment_upload_count()
+    zip_buffer.seek(0)
 
-        return send_file(zip_buffer, as_attachment=True, download_name=f"{file.filename}.zip")
+    if not is_premium:
+        increment_upload_count()
+
+    return send_file(zip_buffer, as_attachment=True, download_name="archivos_comprimidos.zip")
 
     return render_template("compressor.html", remaining=remaining, used=used, limit=FREE_LIMIT_PER_DAY, is_premium=is_premium)
 
